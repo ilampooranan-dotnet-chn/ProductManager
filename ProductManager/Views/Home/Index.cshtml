@@ -1,0 +1,65 @@
+﻿@model ProductApp.Models.ProductActionViewModel
+
+@{
+    ViewData["Title"] = "Product Action Center";
+
+    
+    var actions = new List<(string Name, string Label)>
+    {
+        ("Details", "Details (Read By ID)"),
+        ("Edit", "Edit (Update Price By ID)"),
+        ("Delete", "Delete By ID")
+    };
+}
+
+<h2>Product Action Center</h2>
+<p>Enter a Product ID and select a operation.</p>
+
+<hr />
+
+<form asp-action="Index" method="post">
+
+    <h3>Search/Action Form</h3>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div style="margin-bottom: 10px;">
+        <label asp-for="Id">Product ID:</label><br />
+        <input type="text" asp-for="Id" placeholder="Enter ID" style="width: 200px;" />
+        <span asp-validation-for="Id" class="text-danger"></span>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <label>Select Action:</label><br />
+
+        @foreach (var action in actions)
+        {
+            <div style="margin-top: 5px;">
+                <input type="radio" asp-for="ActionName" value="@action.Name" />
+                <label>@action.Label</label>
+            </div>
+        }
+        <span asp-validation-for="ActionName" class="text-danger"></span>
+    </div>
+
+    <div>
+        <button type="submit">Go to Selected Action</button>
+    </div>
+</form>
+
+<hr />
+
+<h3>Global Operations</h3>
+<ul style="list-style-type: none; padding: 0;">
+    <li style="margin-bottom: 5px;">
+        <a asp-controller="Product" asp-action="Index">Display All Products</a>
+    </li>
+    <li style="margin-bottom: 5px;">
+        <a asp-controller="Product" asp-action="Create">Add New Product</a>
+    </li>
+</ul>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
