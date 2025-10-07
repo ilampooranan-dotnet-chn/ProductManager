@@ -30,24 +30,21 @@ namespace ProductManager.Controllers
             return View();
         }
 
-        // POST: Product/Create (Saves the submitted product)
+        
         [HttpPost]
-        [ValidateAntiForgeryToken] // Protects against Cross-Site Request Forgery
+        [ValidateAntiForgeryToken] 
         public IActionResult Create([Bind("Name,Price")] Product newProduct)
         {
             if (ModelState.IsValid)
             {
                 newProduct.Id = nextId++;
                 products.Add(newProduct);
-                return RedirectToAction(nameof(Index)); // Redirects to the list view
+                return RedirectToAction(nameof(Index)); 
             }
-            return View(newProduct); // If validation fails, show the form again
+            return View(newProduct); 
         }
 
-        // -----------------------------------------------------------
-        // 4. UPDATE (UpdateProductPrice)
-        // -----------------------------------------------------------
-        // GET: Product/Edit/5 (Shows the form pre-filled with the current data)
+
         public IActionResult Edit(int id)
         {
             var product = products.FirstOrDefault(p => p.Id == id);
@@ -58,7 +55,7 @@ namespace ProductManager.Controllers
             return View(product);
         }
 
-        // POST: Product/Edit/5 (Updates the product data)
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Id,Name,Price")] Product updatedProduct)
@@ -73,7 +70,7 @@ namespace ProductManager.Controllers
                 var existingProduct = products.FirstOrDefault(p => p.Id == id);
                 if (existingProduct != null)
                 {
-                    // Update the properties
+                    
                     existingProduct.Name = updatedProduct.Name;
                     existingProduct.Price = updatedProduct.Price;
                 }
@@ -82,10 +79,7 @@ namespace ProductManager.Controllers
             return View(updatedProduct);
         }
 
-        // -----------------------------------------------------------
-        // 5. DELETE (DeleteProduct)
-        // -----------------------------------------------------------
-        // GET: Product/Delete/5 (Shows the confirmation page)
+       
         public IActionResult Delete(int id)
         {
             var product = products.FirstOrDefault(p => p.Id == id);
@@ -96,8 +90,8 @@ namespace ProductManager.Controllers
             return View(product);
         }
 
-        // POST: Product/Delete/5 (Performs the actual deletion)
-        [HttpPost, ActionName("Delete")] // We name the action "DeleteConfirmed" to avoid conflict with GET
+        
+        [HttpPost, ActionName("Delete")] 
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
@@ -108,7 +102,7 @@ namespace ProductManager.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        // Helper method to allow other controllers (like Home) to access the list
+        
         public static List<Product> GetProducts()
         {
             return products;
